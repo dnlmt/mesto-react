@@ -1,0 +1,13 @@
+.profile__avatar-icon {
+    background: rgba(0, 0, 0, 0.80);
+    background-image: url(../../../images/avatar-icon.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 120px;
+    height: 120px;
+    width: 120px;
+    min-width: 120px;
+    border-radius: 100%;
+    opacity: 0;
+    transition: all .2s ease-out;
+}
