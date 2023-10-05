@@ -5,22 +5,25 @@ class Api {
     }
 
     _safeResponse(res) {
-        if(res.ok) {
+        if (res.ok) {
             return res.json()
         }
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
+    _request(url, options) {
+        return fetch(url, options).then(this._safeResponse)
+    }
+
     getUserInfo() {
-        return fetch(`${this._url}/users/me`, {
+        return this._request(`${this._url}/users/me`, {
             method: 'GET',
             headers: this._headers
         })
-            .then((res) => this._safeResponse(res));
     }
 
     setUserInfo(info) {
-        return fetch(`${this._url}/users/me`, {
+        return this._request(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
@@ -28,56 +31,50 @@ class Api {
                 about: info.about
             })
         })
-            .then((res) => this._safeResponse(res));
     }
 
     getInitialCards() {
-        return fetch(`${this._url}/cards`, {
+        return this._request(`${this._url}/cards`, {
             method: 'GET',
             headers: this._headers
         })
-            .then((res) => this._safeResponse(res));
     }
 
     addCard(card) {
-        return fetch(`${this._url}/cards`, {
+        return this._request(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify(card)
         })
-            .then((res) => this._safeResponse(res));
     }
 
     deleteCard(id) {
-        return fetch(`${this._url}/cards/${id}`, {
+        return this._request(`${this._url}/cards/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
-            .then((res) => this._safeResponse(res));
     }
 
     setAvatar(data) {
-        return fetch(`${this._url}/users/me/avatar`, {
+        return this._request(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify(data)
         })
-            .then((res) => this._safeResponse(res));
     }
 
     like(id) {
-        return fetch(`${this._url}/cards/${id}/likes`, {
+        return this._request(`${this._url}/cards/${id}/likes`, {
             method: 'PUT',
             headers: this._headers,
         })
-            .then((res) => this._safeResponse(res));
     }
+
     unlike(id) {
-        return fetch(`${this._url}/cards/${id}/likes`, {
+        return this._request(`${this._url}/cards/${id}/likes`, {
             method: 'DELETE',
             headers: this._headers,
         })
-            .then((res) => this._safeResponse(res));
     }
 }
 

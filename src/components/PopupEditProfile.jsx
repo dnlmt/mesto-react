@@ -1,7 +1,7 @@
 import '../index.css';
 import PopupWithForm from "./PopupWithForm";
 
-function PopupChangeAvatar({isOpen, onClose}) {
+function PopupChangeAvatar({ isOpen, onClose }) {
     return (
         <PopupWithForm
             name='edit-profile'
@@ -11,14 +11,14 @@ function PopupChangeAvatar({isOpen, onClose}) {
             onClose={onClose}
         >
             <label className="popup__label" htmlFor="userName">
-                <input className="popup__input" name="name" type="text" id="userName" value=""
-                       placeholder="Имя" minLength="2" maxLength="40" required/>
-                <span className="userName-error popup__input-error"/>
+                <input className="popup__input" name="name" type="text" id="userName"
+                    placeholder="Имя" minLength="2" maxLength="40" required />
+                <span className="userName-error popup__input-error" />
             </label>
             <label className="popup__label" htmlFor="userSpec">
                 <input className="popup__input" name="about" type="text" id="userSpec"
-                       value="" placeholder="Профессия" minLength="2" maxLength="200" required/>
-                <span className="userSpec-error popup__input-error"/>
+                    placeholder="Профессия" minLength="2" maxLength="200" required />
+                <span className="userSpec-error popup__input-error" />
             </label>
         </PopupWithForm>
     );
