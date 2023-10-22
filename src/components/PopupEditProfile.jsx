@@ -1,7 +1,40 @@
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
+import React, { useState } from "react";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function PopupChangeAvatar({ isOpen, onClose }) {
+function PopupEditProfile({ isOpen, onClose, onUpdateUser }) {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleName = (evt) => {
+    setName(evt.target.value);
+  };
+  const handleDescription = (evt) => {
+    setDescription(evt.target.value);
+  };
+
+  // Подписка на контекст
+  const currentUser = React.useContext(CurrentUserContext);
+
+  // После загрузки текущего пользователя из API
+  // его данные будут использованы в управляемых компонентах.
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [currentUser]);
+
+  const handleSubmit = (evt) => {
+    // Запрещаем браузеру переходить по адресу формы
+    evt.preventDefault();
+
+    // Передаём значения управляемых компонентов во внешний обработчик
+    onUpdateUser({
+      name: name,
+      about: description,
+    });
+  };
+
   return (
     <PopupWithForm
       name="edit-profile"
@@ -9,6 +42,7 @@ function PopupChangeAvatar({ isOpen, onClose }) {
       buttonText="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
+      onSubmit={handleSubmit}
     >
       <label className="popup__label" htmlFor="userName">
         <input
@@ -19,6 +53,8 @@ function PopupChangeAvatar({ isOpen, onClose }) {
           placeholder="Имя"
           minLength="2"
           maxLength="40"
+          value={name || ""}
+          onChange={handleName}
           required
         />
         <span className="userName-error popup__input-error" />
@@ -32,6 +68,8 @@ function PopupChangeAvatar({ isOpen, onClose }) {
           placeholder="Профессия"
           minLength="2"
           maxLength="200"
+          value={description || ""}
+          onChange={handleDescription}
           required
         />
         <span className="userSpec-error popup__input-error" />
@@ -40,4 +78,4 @@ function PopupChangeAvatar({ isOpen, onClose }) {
   );
 }
 
-export default PopupChangeAvatar;
+export default PopupEditProfile;

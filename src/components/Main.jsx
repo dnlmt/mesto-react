@@ -1,30 +1,18 @@
 import React, { useEffect } from "react";
 import "../index.css";
 import Card from "./Card";
-import api from "../utils/api";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userInfo, setUserInfo] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-
-  const [userName, setUserName] = React.useState(null);
-  const [userDescription, setUserDescription] = React.useState(null);
-  const [userAvatar, setUserAvatar] = React.useState(null);
-
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([info, cards]) => {
-        setUserInfo(info);
-        setCards(cards);
-      })
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    setUserName(userInfo.name);
-    setUserDescription(userInfo.about);
-    setUserAvatar(userInfo.avatar);
-  });
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main className="main">
@@ -32,19 +20,19 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         <div
           className="profile__avatar"
           onClick={onEditAvatar}
-          style={{ backgroundImage: `url(${userAvatar})` }}
+          style={{ backgroundImage: `url(${currentUser.avatar})` }}
         >
           <div className="profile__avatar-icon" />
         </div>
         <div className="profile__info">
-          <h1 className="profile__name">{userName}</h1>
+          <h1 className="profile__name">{currentUser.name}</h1>
           <button
             type="button"
             className="button profile__edit-button"
             aria-label="Закрыть"
             onClick={onEditProfile}
           ></button>
-          <p className="profile__speciality">{userDescription}</p>
+          <p className="profile__speciality">{currentUser.about}</p>
         </div>
         <button
           type="button"
@@ -63,6 +51,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             key={item._id}
             onCardClick={onCardClick}
             card={item}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
           />
         ))}
       </section>

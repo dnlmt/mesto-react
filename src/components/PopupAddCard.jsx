@@ -1,7 +1,24 @@
 import "../index.css";
+import React, { useEffect, useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function PopupAddCard({ isOpen, onClose }) {
+function PopupAddCard({ isOpen, onClose, onAddPlace }) {
+  const name = useRef(null);
+  const link = useRef(null);
+
+  useEffect(() => {
+    name.current.value = "";
+    link.current.value = "";
+  }, [isOpen]);
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onAddPlace({
+      name: name.current.value,
+      link: link.current.value,
+    });
+  }
+
   return (
     <PopupWithForm
       name="add-card"
@@ -9,6 +26,7 @@ function PopupAddCard({ isOpen, onClose }) {
       buttonText="Создать"
       isOpen={isOpen}
       onClose={onClose}
+      onSubmit={handleSubmit}
     >
       <label className="popup__label" htmlFor="name">
         <input
@@ -19,6 +37,7 @@ function PopupAddCard({ isOpen, onClose }) {
           placeholder="Название"
           minLength="2"
           maxLength="30"
+          ref={name}
           required
         />
         <span className="name-error popup__input-error" />
@@ -30,6 +49,7 @@ function PopupAddCard({ isOpen, onClose }) {
           type="url"
           id="link"
           placeholder="Ссылка на картинку"
+          ref={link}
           required
         />
         <span className="link-error popup__input-error" />

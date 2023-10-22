@@ -1,10 +1,19 @@
 import "../index.css";
 
-function PopupWithForm({ name, title, children, buttonText, isOpen, onClose }) {
+function PopupWithForm({
+  name,
+  title,
+  children,
+  buttonText,
+  isOpen,
+  onClose,
+  onSubmit,
+}) {
   return (
     <section
       className={`popup edit-${name} ${isOpen ? "popup_opened" : ""}`}
       onClick={onClose}
+      onSubmit={onSubmit}
     >
       <div className="popup__container">
         <button
