@@ -1,8 +1,7 @@
-import "../index.css";
 import React, { useEffect, useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function PopupAddCard({ isOpen, onClose, onAddPlace }) {
+function PopupAddCard({ isOpen, onClose, onAddPlace, isLoading }) {
   const name = useRef(null);
   const link = useRef(null);
 
@@ -23,10 +22,11 @@ function PopupAddCard({ isOpen, onClose, onAddPlace }) {
     <PopupWithForm
       name="add-card"
       title="Новое место"
-      buttonText="Создать"
+      buttonText={isLoading? 'Создание...' : 'Создать'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isLoading={isLoading}
     >
       <label className="popup__label" htmlFor="name">
         <input

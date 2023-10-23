@@ -1,5 +1,3 @@
-import "../index.css";
-
 function PopupWithForm({
   name,
   title,
@@ -7,13 +5,12 @@ function PopupWithForm({
   buttonText,
   isOpen,
   onClose,
-  onSubmit,
+  onSubmit
 }) {
   return (
     <section
       className={`popup edit-${name} ${isOpen ? "popup_opened" : ""}`}
       onClick={onClose}
-      onSubmit={onSubmit}
     >
       <div className="popup__container">
         <button
@@ -24,6 +21,7 @@ function PopupWithForm({
         <form
           className={`popup__form edit-${name}__form`}
           name={`${name}-form`}
+          onSubmit={onSubmit}
         >
           <h2 className={`popup__title`}>{title}</h2>
           {children}

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "../index.css";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -20,6 +19,7 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -49,6 +49,26 @@ function App() {
     setIsImagePopupOpen(false);
   };
 
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    isImagePopupOpen;
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
+
   const handleCloseAllPopups = (evt) => {
     if (
       evt.target.classList.contains("popup_opened") ||
@@ -65,13 +85,15 @@ function App() {
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    })
+    .catch(console.error);
   }
 
   const handleCardDelete = (card) => {
     api.deleteCard(card._id).then(() => {
       setCards((arr) => arr.filter((item) => item._id !== card._id));
-    });
+    })
+    .catch(console.error);
   };
 
   const handleCardClick = (card) => {
@@ -81,24 +103,36 @@ function App() {
   };
 
   const handleUpdateUser = (u) => {
+    setIsLoading(true)
     api.setUserInfo(u).then((res) => {
       setCurrentUser(res);
       closeAllPopups();
-    });
+    })
+    .catch(console.error)
+    .finally(() => 
+      setIsLoading(false));
   };
 
   const handleUpdateAvatar = (u) => {
+    setIsLoading(true)
     api.setAvatar(u).then((res) => {
       setCurrentUser(res);
       closeAllPopups();
-    });
+    })
+    .catch(console.error)
+    .finally(() => 
+      setIsLoading(false));
   };
 
   const handleAddPlaceSubmit = (u) => {
+    setIsLoading(true)
     api.addCard(u).then((card) => {
       setCards([card, ...cards]);
       closeAllPopups();
-    });
+    })
+    .catch(console.error)
+    .finally(() => 
+      setIsLoading(false));
   };
 
   return (
@@ -120,16 +154,19 @@ function App() {
             isOpen={isEditAvatarPopupOpen}
             onClose={handleCloseAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
           />
           <PopupAddCard
             isOpen={isAddPlacePopupOpen}
             onClose={handleCloseAllPopups}
             onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
           />
           <PopupEditProfile
             isOpen={isEditProfilePopupOpen}
             onClose={handleCloseAllPopups}
             onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
           />
           <ImagePopup
             card={selectedCard}

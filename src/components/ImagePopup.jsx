@@ -1,5 +1,3 @@
-import "../index.css";
-
 function ImagePopup({ card: { name, link }, isOpen, onClose }) {
   return (
     <section

@@ -1,9 +1,8 @@
-import "../index.css";
 import PopupWithForm from "./PopupWithForm";
 import React, { useState } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function PopupEditProfile({ isOpen, onClose, onUpdateUser }) {
+function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -22,7 +21,7 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   const handleSubmit = (evt) => {
     // Запрещаем браузеру переходить по адресу формы
@@ -39,10 +38,11 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser }) {
     <PopupWithForm
       name="edit-profile"
       title="Редактировать профиль"
-      buttonText="Сохранить"
+      buttonText={isLoading? 'Сохранение...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isLoading={isLoading}
     >
       <label className="popup__label" htmlFor="userName">
         <input

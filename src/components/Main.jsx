@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "../index.css";
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 

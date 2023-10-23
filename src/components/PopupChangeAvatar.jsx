@@ -1,8 +1,7 @@
-import "../index.css";
 import React, { useEffect, useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function PopupChangeAvatar({ isOpen, onClose, onUpdateAvatar }) {
+function PopupChangeAvatar({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   const avatarRef = useRef(null);
 
   useEffect(() => {
@@ -21,10 +20,11 @@ function PopupChangeAvatar({ isOpen, onClose, onUpdateAvatar }) {
     <PopupWithForm
       name="avatar"
       title="Обновить аватар"
-      buttonText="Сохранить"
+      buttonText={isLoading? 'Сохранение...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isLoading={isLoading}
     >
       <label className="popup__label" htmlFor="avatar">
         <input
