@@ -83,17 +83,23 @@ function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    })
-    .catch(console.error);
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch(console.error);
   }
 
   const handleCardDelete = (card) => {
-    api.deleteCard(card._id).then(() => {
-      setCards((arr) => arr.filter((item) => item._id !== card._id));
-    })
-    .catch(console.error);
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((arr) => arr.filter((item) => item._id !== card._id));
+      })
+      .catch(console.error);
   };
 
   const handleCardClick = (card) => {
@@ -103,36 +109,39 @@ function App() {
   };
 
   const handleUpdateUser = (u) => {
-    setIsLoading(true)
-    api.setUserInfo(u).then((res) => {
-      setCurrentUser(res);
-      closeAllPopups();
-    })
-    .catch(console.error)
-    .finally(() => 
-      setIsLoading(false));
+    setIsLoading(true);
+    api
+      .setUserInfo(u)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   };
 
   const handleUpdateAvatar = (u) => {
-    setIsLoading(true)
-    api.setAvatar(u).then((res) => {
-      setCurrentUser(res);
-      closeAllPopups();
-    })
-    .catch(console.error)
-    .finally(() => 
-      setIsLoading(false));
+    setIsLoading(true);
+    api
+      .setAvatar(u)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   };
 
   const handleAddPlaceSubmit = (u) => {
-    setIsLoading(true)
-    api.addCard(u).then((card) => {
-      setCards([card, ...cards]);
-      closeAllPopups();
-    })
-    .catch(console.error)
-    .finally(() => 
-      setIsLoading(false));
+    setIsLoading(true);
+    api
+      .addCard(u)
+      .then((card) => {
+        setCards([card, ...cards]);
+        closeAllPopups();
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   };
 
   return (

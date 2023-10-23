@@ -5,7 +5,7 @@ function PopupWithForm({
   buttonText,
   isOpen,
   onClose,
-  onSubmit
+  onSubmit,
 }) {
   return (
     <section

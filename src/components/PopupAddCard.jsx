@@ -22,7 +22,7 @@ function PopupAddCard({ isOpen, onClose, onAddPlace, isLoading }) {
     <PopupWithForm
       name="add-card"
       title="Новое место"
-      buttonText={isLoading? 'Создание...' : 'Создать'}
+      buttonText={isLoading ? "Создание..." : "Создать"}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
